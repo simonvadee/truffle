@@ -307,11 +307,17 @@ registerTask('console', "Run a console with deployed contracts instanciated and 
 });
 
 registerTask('serve', "Serve app on http://localhost:8080 and rebuild changes as needed", function(done) {
-  var config = Config.gather(truffle_dir, working_dir, argv, "development");
-  console.log("Using environment " + config.environment + ".");
-  Serve.start(config, function() {
-    runTask("watch");
-  });
+    var config = Config.gather(truffle_dir, working_dir, argv, "development");
+    console.log("Using environment " + config.environment + ".");
+    if (argv.server) {
+	var server = require(path.join(working_dir, argv.server));
+	server.start(config, function() {
+	    runTask("watch");
+	});
+    }    
+    Serve.start(config, function() {
+	runTask("watch");
+    });
 });
 
 
