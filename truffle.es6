@@ -314,10 +314,12 @@ registerTask('serve', "Serve app on http://localhost:8080 and rebuild changes as
 	server.start(config, function() {
 	    runTask("watch");
 	});
-    }    
+    }
+    else {
     Serve.start(config, function() {
 	runTask("watch");
     });
+    }
 });
 
 
