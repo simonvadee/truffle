@@ -306,11 +306,21 @@ registerTask('console', "Run a console with deployed contracts instanciated and 
   Repl.run(config, done);
 });
 
+
+// Supported options:
+// --server=server.js : Use 'server.js' as server file (has to implement a startup function 'start')
 registerTask('serve', "Serve app on http://localhost:8080 and rebuild changes as needed", function(done) {
     var config = Config.gather(truffle_dir, working_dir, argv, "development");
     console.log("Using environment " + config.environment + ".");
     if (argv.server) {
-	var server = require(path.join(working_dir, argv.server));
+	try {
+	    var server = require(path.join(working_dir, argv.server));
+	}
+	catch (e) {
+	    console.log(argv.server, "does not exists, aborting.");
+	    done();
+	    return ;
+	}
 	server.start(config, function() {
 	    runTask("watch");
 	});
